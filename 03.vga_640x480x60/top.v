@@ -38,10 +38,21 @@ module top (
 	);
 
 		// test screen
-	assign red   = de ? x[7:4] : 0;
-//	assign red   = (de && x >= 0 && x <= 32) ? 1 : 0;
-	assign green = de ? y[7:4] : 0;
-	assign blue  = de ? 1'd1 : 1'd0;
+	test_screens_generator test_screens_generator_inst (
+		.Clock (pllclock),
+		.x  (x),
+		.y  (y),
+		.DE (de),
+		.red  (red),
+		.green (green),
+		.blue  (blue)
+	);
+
+		// simple test screen
+//	assign red   = de ? x[7:4] : 0;
+////	assign red   = (de && x >= 0 && x <= 32) ? 1 : 0;
+//	assign green = de ? y[7:4] : 0;
+//	assign blue  = de ? 1'd1 : 1'd0;
 
 		// LED
 	reg [26:0] counter;
