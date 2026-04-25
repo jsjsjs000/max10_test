@@ -23,3 +23,8 @@ module top (
 		end
 	end
 endmodule
+
+/*
+10M08DAF256C8GES
+10 MHz
+*/
