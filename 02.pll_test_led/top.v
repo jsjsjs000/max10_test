@@ -4,12 +4,22 @@ module top (
 	output reg  led       // PIN_M16
 );
 
-	localparam integer CLK_HZ = 10_000_000;
+	localparam integer CLK_HZ = 25_000_000;
 	localparam integer CNT_MAX = (CLK_HZ / 2) - 1;
+	
+	wire pllclock;     // 25.16854 MHz (near 25.175 MHz VGA 640x480x60)
+	wire locked;
 
-	reg [24:0] counter;
+	altpll_inst altpll_inst1 (
+		.areset (~rst_n),
+		.inclk0 (clk),
+		.c0     (pllclock),
+		.locked (locked)
+	);
 
-	always @(posedge clk or negedge rst_n) begin
+	reg [26:0] counter;
+
+	always @(posedge pllclock or negedge rst_n) begin
 		if (!rst_n) begin
 			counter <= 25'd0;
 			led     <= 1'b0;
