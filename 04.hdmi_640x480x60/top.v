@@ -28,23 +28,23 @@ module top (
 	);
 
 		// HDMI generator
-    wire [9:0] x, y;
-    wire hsync, vsync, de;
+	wire [9:0] x, y;
+	wire hsync, vsync, de;
 
-    vga_640x480 vga (
-        .clk(pllclock),
-        .rst(~rst_n),
-        .x(x),
-		  .y(y),
-        .hsync(hsync),
-        .vsync(vsync),
-        .de(de)
-    );
+	vga_640x480 vga (
+		.clk(pllclock),
+		.rst(~rst_n),
+		.x(x),
+		.y(y),
+		.hsync(hsync),
+		.vsync(vsync),
+		.de(de)
+	);
 
-    // ===== test pattern =====
-reg [7:0] red_d, green_d, blue_d;
-reg hsync_d, vsync_d;
-reg de_d;
+		// ===== test pattern =====
+	reg [7:0] red_d, green_d, blue_d;
+	reg hsync_d, vsync_d;
+	reg de_d;
 
 	reg [7:0] red, green, blue;
 	wire [2:0] bar = x / 80;  // 0..7
@@ -73,40 +73,37 @@ reg de_d;
 		end
 	end
 
-    // ===== TMDS =====
-    wire [9:0] tmds_r, tmds_g, tmds_b;
-    tmds_encoder enc_r(.clk(pllclock), .vd(red_d),   .cd(2'b00), .de(de_d), .q(tmds_r));
-    tmds_encoder enc_g(.clk(pllclock), .vd(green_d), .cd(2'b00), .de(de_d), .q(tmds_g));
-    tmds_encoder enc_b(.clk(pllclock), .vd(blue_d),  .cd({vsync_d, hsync_d}), .de(de_d), .q(tmds_b));
+		// ===== TMDS =====
+	wire [9:0] tmds_r, tmds_g, tmds_b;
+	tmds_encoder enc_r(.clk(pllclock), .vd(red_d),   .cd(2'b00), .de(de_d), .q(tmds_r));
+	tmds_encoder enc_g(.clk(pllclock), .vd(green_d), .cd(2'b00), .de(de_d), .q(tmds_g));
+	tmds_encoder enc_b(.clk(pllclock), .vd(blue_d),  .cd({vsync_d, hsync_d}), .de(de_d), .q(tmds_b));
 
-    // ===== LVDS serializer =====
+		// ===== LVDS serializer =====
 	wire [29:0] tmds_bus;
 	assign tmds_bus = {
-		 tmds_r[0], tmds_r[1], tmds_r[2], tmds_r[3], tmds_r[4],
-		 tmds_r[5], tmds_r[6], tmds_r[7], tmds_r[8], tmds_r[9],
+		tmds_r[0], tmds_r[1], tmds_r[2], tmds_r[3], tmds_r[4],
+		tmds_r[5], tmds_r[6], tmds_r[7], tmds_r[8], tmds_r[9],
 
-		 tmds_g[0], tmds_g[1], tmds_g[2], tmds_g[3], tmds_g[4],
-		 tmds_g[5], tmds_g[6], tmds_g[7], tmds_g[8], tmds_g[9],
+		tmds_g[0], tmds_g[1], tmds_g[2], tmds_g[3], tmds_g[4],
+		tmds_g[5], tmds_g[6], tmds_g[7], tmds_g[8], tmds_g[9],
 
-		 tmds_b[0], tmds_b[1], tmds_b[2], tmds_b[3], tmds_b[4],
-		 tmds_b[5], tmds_b[6], tmds_b[7], tmds_b[8], tmds_b[9]
+		tmds_b[0], tmds_b[1], tmds_b[2], tmds_b[3], tmds_b[4],
+		tmds_b[5], tmds_b[6], tmds_b[7], tmds_b[8], tmds_b[9]
 	};
-
 	 
-    lvds_tx lvds (
-        .tx_inclock(pllclock_x5),
-        .tx_coreclock(pllclock),
-        .tx_in(tmds_bus),
-        .tx_out_p(tmds_data_p),
-        .tx_out_n(tmds_data_n)
-    );
+	lvds_tx lvds (
+		.tx_inclock(pllclock_x5),
+		.tx_coreclock(pllclock),
+		.tx_in(tmds_bus),
+		.tx_out_p(tmds_data_p),
+		.tx_out_n(tmds_data_n)
+	);
 
-    // ===== clock lane =====
-    assign tmds_clk_p = pllclock;
+		// ===== clock lane =====
+	assign tmds_clk_p = pllclock;
 
-
-
-	 
+	
 		// LED
 	reg [26:0] counter;
 
