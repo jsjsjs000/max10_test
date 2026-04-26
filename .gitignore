@@ -5,3 +5,4 @@
 */*.qws
 */greybox_tmp/
 */*.v.bak
+*.bak/

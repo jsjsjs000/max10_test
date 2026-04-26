@@ -1,0 +1,2 @@
+soft_lvds_ip_sim/soft_lvds_ip.v
+soft_lvds_ip_sim/altera_soft_lvds/altera_soft_lvds_tx_ERzqh.v
