@@ -6,3 +6,15 @@
 */greybox_tmp/
 */*.v.bak
 *.bak/
+*/*/synthesis/
+*/software/*/obj/
+*/software/*/*.elf/
+*/software/*/*.map/
+*/software/*/*.objdump/
+*/software/.metadata
+*/software/*_bsp
+*/software/RemoteSystemsTempFiles
+
+05.nios_ii-/
+05.nios_m-/
+05.nios_v_m/
