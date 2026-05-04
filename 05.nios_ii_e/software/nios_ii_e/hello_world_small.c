@@ -78,8 +78,11 @@
  *
  */
 
+#include "stdio.h"
 #include "sys/alt_stdio.h"
-#include "sys/stdio.h"
+#include "priv/alt_busy_sleep.h"
+#include "altera_avalon_pio_regs.h"
+#include "system.h"
 
 int main()
 { 
@@ -90,7 +93,15 @@ int main()
 	{
 		printf("tick %d\n", a++);
 
-		for (int i = 0; i < 100000; i++) ;
+//		for (int i = 0; i < 100000; i++) ;
+
+			/* if #define ALT_CPU_CPU_FREQ 50000000 in system.h and 10 MHz clock */
+		alt_busy_sleep(1000000 / 2);
+
+		IOWR_ALTERA_AVALON_PIO_DATA(PIO_OUTPUT_BASE, 0x00);
+
+		alt_busy_sleep(1000000 / 2);
+		IOWR_ALTERA_AVALON_PIO_DATA(PIO_OUTPUT_BASE, 0x80);
 	}
 
 	return 0;

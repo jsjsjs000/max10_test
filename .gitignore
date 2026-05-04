@@ -8,9 +8,9 @@
 *.bak/
 */*/synthesis/
 */software/*/obj/
-*/software/*/*.elf/
-*/software/*/*.map/
-*/software/*/*.objdump/
+*/software/*/*.elf
+*/software/*/*.map
+*/software/*/*.objdump
 */software/.metadata
 */software/*_bsp
 */software/RemoteSystemsTempFiles
