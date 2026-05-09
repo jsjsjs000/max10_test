@@ -7,19 +7,19 @@ module top (
 	localparam integer CLK_HZ = 25_000_000;
 	localparam integer CNT_MAX = (CLK_HZ / 2) - 1;
 	
-	wire pllclock;     // 25.16854 MHz (near 25.175 MHz VGA 640x480x60)
-	wire locked;
+	wire pll_clock;     // 25.16854 MHz (near 25.175 MHz VGA 640x480x60)
+	wire pll_locked;
 
 	altpll_inst altpll_inst1 (  // 10 MHz * 224 / 89 = 25.16854 MHz
 		.areset (~rst_n),
 		.inclk0 (clk),
-		.c0     (pllclock),
-		.locked (locked)
+		.c0     (pll_clock),
+		.locked (pll_locked)
 	);
 
 	reg [26:0] counter;
 
-	always @(posedge pllclock or negedge rst_n) begin
+	always @(posedge pll_clock or negedge rst_n) begin
 		if (!rst_n) begin
 			counter <= 25'd0;
 			led     <= 1'b0;

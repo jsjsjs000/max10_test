@@ -1,18 +1,22 @@
 # # File gsaved with Nlview version 6.3.8  2013-12-19 bk=1.2992 VDI=34 GEI=35
 # 
 preplace inst nios_ii_e.NiosIIe.reset_bridge -pg 1
-preplace inst nios_ii_e.clk_0 -pg 1 -lvl 2 -y 80
-preplace inst nios_ii_e.SRAM -pg 1 -lvl 3 -y 70
+preplace inst nios_ii_e.pio_input -pg 1 -lvl 3 -y 390
+preplace inst nios_ii_e.clk_0 -pg 1 -lvl 2 -y 70
+preplace inst nios_ii_e.SRAM -pg 1 -lvl 3 -y 60
 preplace inst nios_ii_e -pg 1 -lvl 1 -y 40 -regy -20
 preplace inst nios_ii_e.NiosIIe.clock_bridge -pg 1
-preplace inst nios_ii_e.NiosIIe -pg 1 -lvl 1 -y 110
+preplace inst nios_ii_e.NiosIIe -pg 1 -lvl 1 -y 100
 preplace inst nios_ii_e.NiosIIe.cpu -pg 1
-preplace inst nios_ii_e.DEBUG -pg 1 -lvl 3 -y 150
-preplace netloc INTERCONNECT<net_container>nios_ii_e</net_container>(SLAVE)NiosIIe.debug_mem_slave,(MASTER)NiosIIe.data_master,(SLAVE)SRAM.s1,(SLAVE)DEBUG.avalon_jtag_slave,(MASTER)NiosIIe.instruction_master) 1 0 3 80 70 460 70 680
-preplace netloc POINT_TO_POINT<net_container>nios_ii_e</net_container>(SLAVE)DEBUG.irq,(MASTER)NiosIIe.irq) 1 1 2 NJ 200 N
-preplace netloc FAN_OUT<net_container>nios_ii_e</net_container>(SLAVE)NiosIIe.clk,(MASTER)clk_0.clk,(SLAVE)DEBUG.clk,(SLAVE)SRAM.clk1) 1 0 3 60 30 NJ 30 700
-preplace netloc POINT_TO_POINT<net_container>nios_ii_e</net_container>(MASTER)NiosIIe.debug_reset_request,(SLAVE)clk_0.clk_in_reset) 1 1 1 480
-preplace netloc FAN_OUT<net_container>nios_ii_e</net_container>(SLAVE)NiosIIe.reset,(MASTER)clk_0.clk_reset,(SLAVE)DEBUG.reset,(SLAVE)SRAM.reset1) 1 0 3 80 250 NJ 250 720
-preplace netloc EXPORT<net_container>nios_ii_e</net_container>(SLAVE)nios_ii_e.clk,(SLAVE)clk_0.clk_in) 1 0 2 NJ 50 NJ
-levelinfo -pg 1 0 30 900
-levelinfo -hier nios_ii_e 40 200 510 750 890
+preplace inst nios_ii_e.DEBUG -pg 1 -lvl 3 -y 140
+preplace inst nios_ii_e.pio_output -pg 1 -lvl 3 -y 290
+preplace netloc POINT_TO_POINT<net_container>nios_ii_e</net_container>(SLAVE)DEBUG.irq,(MASTER)NiosIIe.irq) 1 1 2 NJ 190 NJ
+preplace netloc INTERCONNECT<net_container>nios_ii_e</net_container>(SLAVE)pio_output.s1,(SLAVE)SRAM.s1,(MASTER)NiosIIe.data_master,(SLAVE)pio_input.s1,(SLAVE)DEBUG.avalon_jtag_slave,(SLAVE)NiosIIe.debug_mem_slave,(MASTER)NiosIIe.instruction_master) 1 0 3 110 280 490 160 770
+preplace netloc EXPORT<net_container>nios_ii_e</net_container>(SLAVE)nios_ii_e.inputs,(SLAVE)pio_input.external_connection) 1 0 3 NJ 420 NJ 420 NJ
+preplace netloc FAN_OUT<net_container>nios_ii_e</net_container>(SLAVE)pio_output.clk,(SLAVE)pio_input.clk,(SLAVE)SRAM.clk1,(SLAVE)NiosIIe.clk,(MASTER)clk_0.clk,(SLAVE)DEBUG.clk) 1 0 3 90 240 NJ 140 730
+preplace netloc EXPORT<net_container>nios_ii_e</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)nios_ii_e.reset) 1 0 2 NJ 260 NJ
+preplace netloc EXPORT<net_container>nios_ii_e</net_container>(SLAVE)nios_ii_e.clk,(SLAVE)clk_0.clk_in) 1 0 2 NJ 40 NJ
+preplace netloc FAN_OUT<net_container>nios_ii_e</net_container>(SLAVE)NiosIIe.reset,(SLAVE)SRAM.reset1,(SLAVE)DEBUG.reset,(SLAVE)pio_output.reset,(MASTER)clk_0.clk_reset,(SLAVE)pio_input.reset) 1 0 3 130 300 NJ 300 750
+preplace netloc EXPORT<net_container>nios_ii_e</net_container>(SLAVE)nios_ii_e.outputs,(SLAVE)pio_output.external_connection) 1 0 3 NJ 320 NJ 320 NJ
+levelinfo -pg 1 0 60 960
+levelinfo -hier nios_ii_e 70 250 560 800 950

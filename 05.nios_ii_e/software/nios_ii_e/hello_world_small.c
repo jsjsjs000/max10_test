@@ -89,19 +89,22 @@ int main()
 	alt_putstr("Hello from Nios II!\n");
 
 	int a = 1;
+	alt_u8 output = 0x00;
+
 	while (1)
 	{
 		printf("tick %d\n", a++);
 
-//		for (int i = 0; i < 100000; i++) ;
-
-			/* if #define ALT_CPU_CPU_FREQ 50000000 in system.h and 10 MHz clock */
+			/* #define ALT_CPU_CPU_FREQ 50000000 in system.h */
 		alt_busy_sleep(1000000 / 2);
 
-		IOWR_ALTERA_AVALON_PIO_DATA(PIO_OUTPUT_BASE, 0x00);
+		IOWR_ALTERA_AVALON_PIO_DATA(PIO_OUTPUT_BASE, output);
+		output ^= 0x80;
 
 		alt_busy_sleep(1000000 / 2);
-		IOWR_ALTERA_AVALON_PIO_DATA(PIO_OUTPUT_BASE, 0x80);
+
+		IOWR_ALTERA_AVALON_PIO_DATA(PIO_OUTPUT_BASE, output);
+		output ^= 0x80;
 	}
 
 	return 0;
