@@ -79,6 +79,9 @@ module top (
 	tmds_encoder enc_g(.clk(pllclock), .vd(green_d), .cd(2'b00), .de(de_d), .q(tmds_g));
 	tmds_encoder enc_b(.clk(pllclock), .vd(blue_d),  .cd({vsync_d, hsync_d}), .de(de_d), .q(tmds_b));
 
+		// ===== clock lane =====
+	assign tmds_clk_p = pllclock;
+
 		// ===== LVDS serializer =====
 	wire [29:0] tmds_bus;
 	assign tmds_bus = {
@@ -91,7 +94,7 @@ module top (
 		tmds_b[0], tmds_b[1], tmds_b[2], tmds_b[3], tmds_b[4],
 		tmds_b[5], tmds_b[6], tmds_b[7], tmds_b[8], tmds_b[9]
 	};
-	 
+
 	lvds_tx lvds (
 		.tx_inclock(pllclock_x5),
 		.tx_coreclock(pllclock),
@@ -100,10 +103,6 @@ module top (
 		.tx_out_n(tmds_data_n)
 	);
 
-		// ===== clock lane =====
-	assign tmds_clk_p = pllclock;
-
-	
 		// LED
 	reg [26:0] counter;
 
