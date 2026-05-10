@@ -109,3 +109,8 @@ int main()
 
 	return 0;
 }
+
+/*
+	Properties > Nios II Application Properties:
+ 		Set the Optimization Level to -Os (small)
+ */

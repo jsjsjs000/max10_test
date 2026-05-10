@@ -1,0 +1,28 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: qsys-generate C:\Users\jarsulk\Desktop\max10_test\07.signal_tap_logic_analyzer\signal_tap_ip.qsys --block-symbol-file --output-directory=C:\Users\jarsulk\Desktop\max10_test\07.signal_tap_logic_analyzer\signal_tap_ip --family="MAX 10" --part=10M08DAF256C8GES
+Progress: Loading 07.signal_tap_logic_analyzer/signal_tap_ip.qsys
+Progress: Reading input file
+Progress: Adding signaltap_ii_logic_analyzer_0 [altera_signaltap_ii_logic_analyzer 22.1]
+Progress: Parameterizing module signaltap_ii_logic_analyzer_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: qsys-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate C:\Users\jarsulk\Desktop\max10_test\07.signal_tap_logic_analyzer\signal_tap_ip.qsys --synthesis=VERILOG --output-directory=C:\Users\jarsulk\Desktop\max10_test\07.signal_tap_logic_analyzer\signal_tap_ip\synthesis --family="MAX 10" --part=10M08DAF256C8GES
+Progress: Loading 07.signal_tap_logic_analyzer/signal_tap_ip.qsys
+Progress: Reading input file
+Progress: Adding signaltap_ii_logic_analyzer_0 [altera_signaltap_ii_logic_analyzer 22.1]
+Progress: Parameterizing module signaltap_ii_logic_analyzer_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: signal_tap_ip: Generating signal_tap_ip "signal_tap_ip" for QUARTUS_SYNTH
+Info: signaltap_ii_logic_analyzer_0: "signal_tap_ip" instantiated altera_signaltap_ii_logic_analyzer "signaltap_ii_logic_analyzer_0"
+Info: signal_tap_ip: Done "signal_tap_ip" with 2 modules, 1 files
+Info: qsys-generate succeeded.
+Info: Finished: Create HDL design files for synthesis
