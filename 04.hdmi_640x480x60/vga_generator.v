@@ -32,7 +32,7 @@ module vga_640x480 (
 		else if (h_count == H_TOTAL - 1)
 			h_count <= 0;
 		else
-			h_count <= h_count + 1;
+			h_count <= h_count + 1'd1;
 	end
 
 		// vertical counter
@@ -43,7 +43,7 @@ module vga_640x480 (
 			if (v_count == V_TOTAL - 1)
 				v_count <= 0;
 			else
-				v_count <= v_count + 1;
+				v_count <= v_count + 1'd1;
 	  end
 	end
 

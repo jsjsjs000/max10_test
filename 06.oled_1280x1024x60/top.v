@@ -12,13 +12,13 @@ module top (
 );
 
 		/* PLL */
-	wire pllclk_108mhz;
+	wire pll_clk_108mhz;
 	wire pll_locked;
 
 	altpll_ip altpll_inst (
 		.areset (~rst_n),
 		.inclk0 (clk_25mhz),
-		.c0     (pllclk_108mhz),     // 25*108/25 = 108 MHz
+		.c0     (pll_clk_108mhz),     // 25*108/25 = 108 MHz
 		.locked (pll_locked)
 	);
 
@@ -29,7 +29,7 @@ module top (
 	wire [7:0] red;
 	wire [7:0] green;
 	wire [7:0] blue;
-	assign oled_vclk = pllclk_108mhz;
+	assign oled_vclk = pll_clk_108mhz;
 	image_generator image_generator_impl(
 		.Clock(oled_vclk),
 		.Reset(rst_n),

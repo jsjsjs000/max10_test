@@ -15,16 +15,16 @@ module top (
 	localparam integer CNT_MAX = (CLK_HZ / 2) - 1;
 
 		// PLL
-	wire pllclock;
-	wire pllclock_x5;
+	wire pll_clock;
+	wire pll_clock_x5;
 	wire locked;
 
 	altpll_ip altpll_inst (
 		.areset (~rst_n),
 		.inclk0 (clk),
-		.c0     (pllclock),     // 10*161/64=25,142857 MHz
-		.c1     (pllclock_x5),  // 10*805/64=125,714286 MHz
-		.locked (locked)
+		.c0     (pll_clock),     // 10*161/64=25,142857 MHz
+		.c1     (pll_clock_x5),  // 10*805/64=125,714286 MHz
+		.locked (pll_locked)
 	);
 
 		// HDMI generator
@@ -32,7 +32,7 @@ module top (
 	wire hsync, vsync, de;
 
 	vga_640x480 vga (
-		.clk(pllclock),
+		.clk(pll_clock),
 		.rst(~rst_n),
 		.x(x),
 		.y(y),
@@ -48,7 +48,7 @@ module top (
 
 	reg [7:0] red, green, blue;
 	wire [2:0] bar = x / 80;  // 0..7
-	always @(posedge pllclock) begin
+	always @(posedge pll_clock) begin
 		de_d <= de;
 		hsync_d <= hsync;
 		vsync_d <= vsync;
@@ -75,12 +75,12 @@ module top (
 
 		// ===== TMDS =====
 	wire [9:0] tmds_r, tmds_g, tmds_b;
-	tmds_encoder enc_r(.clk(pllclock), .vd(red_d),   .cd(2'b00), .de(de_d), .q(tmds_r));
-	tmds_encoder enc_g(.clk(pllclock), .vd(green_d), .cd(2'b00), .de(de_d), .q(tmds_g));
-	tmds_encoder enc_b(.clk(pllclock), .vd(blue_d),  .cd({vsync_d, hsync_d}), .de(de_d), .q(tmds_b));
+	tmds_encoder enc_r(.clk(pll_clock), .vd(red_d),   .cd(2'b00), .de(de_d), .q(tmds_r));
+	tmds_encoder enc_g(.clk(pll_clock), .vd(green_d), .cd(2'b00), .de(de_d), .q(tmds_g));
+	tmds_encoder enc_b(.clk(pll_clock), .vd(blue_d),  .cd({vsync_d, hsync_d}), .de(de_d), .q(tmds_b));
 
 		// ===== clock lane =====
-	assign tmds_clk_p = pllclock;
+	assign tmds_clk_p = pll_clock;
 
 		// ===== LVDS serializer =====
 	wire [29:0] tmds_bus;
@@ -96,8 +96,8 @@ module top (
 	};
 
 	lvds_tx lvds (
-		.tx_inclock(pllclock_x5),
-		.tx_coreclock(pllclock),
+		.tx_inclock(pll_clock_x5),
+		.tx_coreclock(pll_clock),
 		.tx_in(tmds_bus),
 		.tx_out_p(tmds_data_p),
 		.tx_out_n(tmds_data_n)
@@ -106,7 +106,7 @@ module top (
 		// LED
 	reg [26:0] counter;
 
-	always @(posedge pllclock or negedge rst_n) begin
+	always @(posedge pll_clock or negedge rst_n) begin
 		if (!rst_n) begin
 			counter <= 25'd0;
 			led0     <= 1'b0;

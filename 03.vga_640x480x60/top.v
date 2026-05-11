@@ -13,14 +13,14 @@ module top (
 	localparam integer CNT_MAX = (CLK_HZ / 2) - 1;
 
 		// PLL
-	wire pllclock;     // 25.16854 MHz (near 25.175 MHz VGA 640x480x60)
-	wire locked;
+	wire pll_clock;     // 25.16854 MHz (near 25.175 MHz VGA 640x480x60)
+	wire pll_locked;
 
 	altpll_inst altpll_inst1 (  // 10 MHz * 224 / 89 = 25.16854 MHz
 		.areset (~rst_n),
 		.inclk0 (clk),
-		.c0     (pllclock),
-		.locked (locked)
+		.c0     (pll_clock),
+		.locked (pll_locked)
 	);
 
 		// VGA generator
@@ -28,7 +28,7 @@ module top (
 	wire [9:0] x;
 	wire [9:0] y;
 	vga_640x480_60 vga_640x480_60_inst1 (
-		.clk      (pllclock),
+		.clk      (pll_clock),
 		.rst      (~rst_n),
 		.hsync    (hsync),
 		.vsync    (vsync),
@@ -39,7 +39,7 @@ module top (
 
 		// test screen
 	test_screens_generator test_screens_generator_inst (
-		.Clock (pllclock),
+		.Clock (pll_clock),
 		.x  (x),
 		.y  (y),
 		.DE (de),
@@ -57,7 +57,7 @@ module top (
 		// LED
 	reg [26:0] counter;
 
-	always @(posedge pllclock or negedge rst_n) begin
+	always @(posedge pll_clock or negedge rst_n) begin
 		if (!rst_n) begin
 			counter <= 25'd0;
 			led     <= 1'b0;
