@@ -23,8 +23,16 @@ module top_tb();
 
 	initial begin
 		$display("====== Start ======");
-		#2000;
+		#100_000_000;  // 100 ms
 		$display("====== Stop ======");
 		$stop;
 	end
 endmodule
+
+/*
+fix file:
+C:\intelfpga_lite\22.1std\quartus\common\tcl\internal\nativelink\qnativelinkflow.tcl
+	set questa_installation "$questa_fse_directory
+to:
+	set questa_installation "$questa_fse_directory"
+*/
