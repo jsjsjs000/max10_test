@@ -31,7 +31,7 @@ module number_to_7seg (
 endmodule
 
 module leds_driver #(
-	parameter integer CLK_HZ = 10_000_000
+	parameter integer CLK_FREQ_HZ = 10_000_000
 )(
 	input  wire        clk,
 	input  wire        reset,
@@ -41,7 +41,7 @@ module leds_driver #(
 	output reg  [3:0]  led_kathode
 );
 
-	localparam integer LEDS_COUNTER_MAX = CLK_HZ / 500; // 500 Hz LEDs multiplexing
+	localparam integer LEDS_COUNTER_MAX = CLK_FREQ_HZ / 500; // 500 Hz LEDs multiplexing
 
 	assign led_anode_dot = 1'b0;
 
