@@ -93,22 +93,30 @@ module top (
 		.repeat_pulse(button2r_pulse)
 	);
 
-		/* increase number */
+		/* increase and decrease number */
 	always @(posedge clk or negedge rst_n) begin
 		if (~rst_n)
 			number <= 14'd0;
 		else begin
-			if (button1l_pressed)
+				/* +1 */
+			if (button1l_pressed && number == 14'd9999)
+				number <= 14'd0;
+			else if (button1l_pressed)
 				number <= number + 1'b1;
+				/* -1 */
 			else if (button2r_pressed && number == 14'd0)
 				number <= 14'd9999;
 			else if (button2r_pressed)
 				number <= number - 1'b1;
-			
-			if (button1l_pulse)
+
+				/* +10 */
+			if (button1l_pulse && number >= 14'd9990)
+				number <= number + 5'd10 - 14'd10000;
+			else if (button1l_pulse)
 				number <= number + 5'd10;
+				/* -10 */
 			else if (button2r_pulse && number < 5'd10)
-				number <= 14'd10000 - number;
+				number <= 14'd10000 - 5'd10 + number;
 			else if (button2r_pulse)
 				number <= number - 5'd10;
 		end

@@ -1,3 +1,5 @@
+`define DIGIT_OVERFLOW 4'h0f
+
 module number_to_7seg (
 	input  wire [3:0] digit,
 	output reg  [6:0] segments
@@ -12,6 +14,8 @@ module number_to_7seg (
 	localparam [6:0] DIGIT_7 = 7'b1110000;
 	localparam [6:0] DIGIT_8 = 7'b1111111;
 	localparam [6:0] DIGIT_9 = 7'b1111011;
+	localparam [6:0] DIGIT_UNDER_LINE = 7'b0001000;
+	localparam [6:0] DIGIT_BLANK = 7'b0000000;
 
 	always @(*) begin
 		case (digit)
@@ -25,7 +29,8 @@ module number_to_7seg (
 			4'd7: segments = DIGIT_7;
 			4'd8: segments = DIGIT_8;
 			4'd9: segments = DIGIT_9;
-			default: segments = 7'b0000000;
+			`DIGIT_OVERFLOW: segments = DIGIT_UNDER_LINE;
+			default: segments = DIGIT_BLANK;
 		endcase
 	end
 endmodule
@@ -42,6 +47,7 @@ module leds_driver #(
 );
 
 	localparam integer LEDS_COUNTER_MAX = CLK_FREQ_HZ / 500; // 500 Hz LEDs multiplexing
+	localparam integer MAX_NUMBER = 10000;
 
 	assign led_anode_dot = 1'b0;
 
@@ -53,19 +59,19 @@ module leds_driver #(
 	reg  [2:0]  leds_row;
 
 	number_to_7seg number_to_7seg_1 (
-		.digit(number % 10),
+		.digit(number > MAX_NUMBER ? `DIGIT_OVERFLOW : number % 10),
 		.segments(leds1)
 	);
 	number_to_7seg number_to_7seg_2 (
-		.digit((number / 10) % 10),
+		.digit(number > MAX_NUMBER ? `DIGIT_OVERFLOW : (number / 10) % 10),
 		.segments(leds2)
 	);
 	number_to_7seg number_to_7seg_3 (
-		.digit((number / 100) % 10),
+		.digit(number > MAX_NUMBER ? `DIGIT_OVERFLOW : (number / 100) % 10),
 		.segments(leds3)
 	);
 	number_to_7seg number_to_7seg_4 (
-		.digit((number / 1000) % 10),
+		.digit(number > MAX_NUMBER ? `DIGIT_OVERFLOW : (number / 1000) % 10),
 		.segments(leds4)
 	);
 
