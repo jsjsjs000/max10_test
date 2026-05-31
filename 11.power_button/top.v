@@ -43,3 +43,8 @@ module top (
 	
 	assign led = ~power_on;
 endmodule
+
+/*
+10M08DAF256C8GES
+10 MHz
+*/
