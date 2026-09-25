@@ -15,19 +15,22 @@ module top (
 	localparam RO_COUNT = 32;
 
 		/* example counter */
-	reg [32:0] counter;
+	reg [32:0] counter1;
+	reg [7:0]  counter2;
 	reg led_reg;
 	always @(posedge clk) begin
 		if (rst_n == 1'b0) begin
-			counter <= 0;
+			counter1 <= 0;
+			counter2 <= 0;
 			led_reg <= 1'b0;
 		end else begin
-			if (counter >= CLK_FREQ_HZ) begin
-				counter <= 0;
+			if (counter1 >= CLK_FREQ_HZ) begin
+				counter1 <= 0;
+				counter2 <= counter2 + 1'b1;
 				led_reg <= ~led_reg;
 			end
 			else
-				counter <= counter + 1'b1;
+				counter1 <= counter1 + 1'b1;
 		end
 	end
 
@@ -68,8 +71,8 @@ module top (
 		{ ((RO_COUNT-2)*8){1'b0} },
 		status_reg_0
 	};
-	assign status_reg_0 = counter[7:0];
-	assign status_reg_31 = { counter[6:0], 1'b0 };
+	assign status_reg_0 = counter1[7:0];
+	assign status_reg_31 = counter2;
 
 //	assign ro_regs_flat[8*0 +: 8] = status_reg_0;
 //	assign ro_regs_flat[8*1 +: 8] = status_reg_1;
